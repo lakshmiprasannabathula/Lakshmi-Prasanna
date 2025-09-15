@@ -1,76 +1,147 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cooking Recipes</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Cooking Recipes Hub</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-
-  <!-- Header -->
-  <header>
-    <h1>🍝 Delicious Pasta Recipe</h1>
-    <nav>
-      <a href="#">Home</a>
-      <a href="#">Recipes</a>
-      <a href="#">Contact</a>
+  <header class="site-header">
+    <div class="brand"><h1>🍳 Cooking Recipes Hub</h1></div>
+    <nav class="main-nav" aria-label="Main navigation">
+      <a href="#home" data-link>Home</a>
+      <a href="#recipes" data-link>Recipes</a>
+      <a href="#about" data-link>About</a>
+      <a href="#contact" data-link>Contact</a>
+      <button id="nav-toggle" class="nav-toggle" aria-label="toggle menu">☰</button>
     </nav>
   </header>
 
-  <!-- Main content -->
   <main class="container">
+    <!-- HOME -->
+    <section id="home" class="page card">
+      <div class="hero">
+        <div>
+          <h2>Featured Recipe: Creamy Tomato Pasta</h2>
+          <p>Quick, comforting, and perfect for weeknights — learn the steps, try a quiz, and save items to your shopping list.</p>
+          <div style="margin-top:12px">
+            <a class="btn" href="#recipes" data-link>View Recipes</a>
+          </div>
+        </div>
+        <div><img src="https://via.placeholder.com/450x300?text=Pasta" alt="Featured Pasta"></div>
+      </div>
 
-    <!-- Recipe Section -->
-    <section class="recipe-card">
-      <img src="pasta.jpg" alt="Pasta Recipe">
-      <h2>Ingredients</h2>
-      <ul>
-        <li>200g Pasta</li>
-        <li>2 Tomatoes</li>
-        <li>1 Onion</li>
-        <li>2 cloves Garlic</li>
-        <li>Olive Oil</li>
-        <li>Salt and Pepper</li>
-      </ul>
+      <div class="grid-2" style="margin-top:16px">
+        <article class="card">
+          <h3>Recipe Steps</h3>
+          <ol id="home-steps">
+            <li>Boil pasta until al dente.</li>
+            <li>Sauté aromatics in olive oil.</li>
+            <li>Add tomatoes & simmer.</li>
+            <li>Stir in cream & combine with pasta.</li>
+          </ol>
+          <p class="muted">Click steps to mark done.</p>
+        </article>
 
-      <h2>Steps to Cook</h2>
-      <ol id="steps">
-        <li>Boil pasta until soft.</li>
-        <li>Chop tomatoes, onion, and garlic.</li>
-        <li>Sauté onion and garlic in olive oil.</li>
-        <li>Add tomatoes and cook into a sauce.</li>
-        <li>Mix pasta with sauce and season.</li>
-        <li>Serve hot and enjoy!</li>
-      </ol>
+        <article class="card">
+          <h3>Cooking Quiz</h3>
+          <div id="home-quiz"></div>
+          <button id="home-quiz-submit" class="btn small">Submit</button>
+          <p id="home-quiz-result"></p>
+        </article>
+      </div>
 
-      <button onclick="showMessage()">Try This Recipe</button>
-      <button onclick="toggleStep()">Mark Step Done</button>
+      <section class="card" style="margin-top:12px">
+        <h3>Food Fun</h3>
+        <button id="joke-btn" class="btn">Get a Food Joke</button>
+        <p id="joke-output" class="muted"></p>
+      </section>
+
+      <section class="card" style="margin-top:12px">
+        <h3>Shopping / To-Do</h3>
+        <div id="todo-app">
+          <div style="display:flex;gap:8px">
+            <input id="todo-input" placeholder="Add item (e.g., 200g Pasta)" />
+            <button id="todo-add" class="btn small">Add</button>
+          </div>
+          <ul id="todo-list"></ul>
+          <p class="muted">Items persist in your browser.</p>
+        </div>
+      </section>
     </section>
 
-    <!-- Contact Form -->
-    <section class="form-card">
-      <h2>Contact Us</h2>
-      <form id="contactForm">
-        <label for="name">Name:</label>
-        <input type="text" id="name" required>
+    <!-- RECIPES -->
+    <section id="recipes" class="page card hidden">
+      <header class="flex-between">
+        <h2>All Recipes</h2>
+        <div class="controls">
+          <input id="search" type="search" placeholder="Search recipes..." />
+          <select id="filter-category">
+            <option value="">All categories</option>
+            <option value="Vegetarian">Vegetarian</option>
+            <option value="Seafood">Seafood</option>
+            <option value="Meat">Meat</option>
+            <option value="Dessert">Dessert</option>
+          </select>
+          <select id="sort-by">
+            <option value="rating-desc">Rating (high → low)</option>
+            <option value="rating-asc">Rating (low → high)</option>
+            <option value="time-asc">Time (short → long)</option>
+          </select>
+        </div>
+      </header>
 
-        <label for="email">Email:</label>
-        <input type="email" id="email" required>
+      <div id="recipe-grid" class="grid-cards card" style="margin-top:12px"></div>
 
-        <label for="message">Message:</label>
-        <textarea id="message" rows="4" required></textarea>
+      <!-- carousel modal -->
+      <div id="carousel" class="carousel hidden" aria-hidden="true">
+        <button id="carousel-close" class="carousel-close" aria-label="Close carousel">✕</button>
+        <button id="carousel-prev" class="carousel-nav" aria-label="Previous">‹</button>
+        <div class="carousel-stage"><img id="carousel-img" src="" alt="carousel image"></div>
+        <button id="carousel-next" class="carousel-nav" aria-label="Next">›</button>
+      </div>
+    </section>
 
-        <button type="submit">Submit</button>
+    <!-- ABOUT -->
+    <section id="about" class="page card hidden">
+      <h2>About This Project</h2>
+      <p>This project demonstrates a responsive cooking recipes site with advanced front-end features: filtering, sorting, image carousel, persistent favorites & shopping list (localStorage), contact form saving, a quiz, and external API usage for jokes.</p>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="page card hidden">
+      <h2>Contact</h2>
+      <form id="contact-form" class="card">
+        <label for="cname">Name</label>
+        <input id="cname" required />
+        <label for="cemail">Email</label>
+        <input id="cemail" type="email" required />
+        <label for="cmsg">Message</label>
+        <textarea id="cmsg" rows="4" required></textarea>
+        <div style="margin-top:8px">
+          <button type="submit" class="btn">Send Message</button>
+        </div>
+        <p id="contact-feedback"></p>
       </form>
-    </section>
 
+      <section class="card">
+        <h3>Saved Messages</h3>
+        <ul id="saved-messages"></ul>
+      </section>
+
+      <section class="card">
+        <h3>Notes / To-Do (localStorage)</h3>
+        <div style="display:flex;gap:8px">
+          <input id="note-input" placeholder="Write a note or to-do item" />
+          <button id="note-add" class="btn small">Add</button>
+        </div>
+        <ul id="notes-list"></ul>
+      </section>
+    </section>
   </main>
 
-  <!-- Footer -->
-  <footer>
-    <p>&copy; 2025 Cooking Recipes. All rights reserved.</p>
-  </footer>
+  <footer class="site-footer"><p>&copy; 2025 Cooking Recipes Hub</p></footer>
 
   <script src="script.js"></script>
 </body>
