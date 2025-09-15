@@ -1,153 +1,45 @@
-/***********************
- * Data
- ***********************/
-const RECIPES = [
-  { id:1, title:"Creamy Tomato Pasta", category:"Vegetarian", time:25, rating:4.6,
-    img:"https://via.placeholder.com/640x420?text=Creamy+Tomato+Pasta",
-    ingredients:["200g pasta","2 tomatoes","1 onion","2 cloves garlic","olive oil","salt","pepper"],
-    steps:["Boil pasta until al dente.","Sauté onion & garlic.","Add tomatoes & simmer.","Add cream and combine with pasta."] },
-  { id:2, title:"Garlic Butter Shrimp", category:"Seafood", time:20, rating:4.8,
-    img:"https://via.placeholder.com/640x420?text=Garlic+Butter+Shrimp",
-    ingredients:["400g shrimp","2 tbsp butter","3 cloves garlic","lemon","parsley","salt"],
-    steps:["Season shrimp.","Sear shrimp in butter.","Add garlic & lemon.","Finish with parsley."] },
-  { id:3, title:"Lemon Herb Chicken", category:"Meat", time:40, rating:4.4,
-    img:"https://via.placeholder.com/640x420?text=Lemon+Herb+Chicken",
-    ingredients:["1kg chicken","lemon","rosemary","garlic","olive oil","salt","pepper"],
-    steps:["Marinate chicken.","Roast at 200°C until done.","Rest then serve."] },
-  { id:4, title:"Chocolate Lava Cake", category:"Dessert", time:30, rating:4.9,
-    img:"https://via.placeholder.com/640x420?text=Chocolate+Lava+Cake",
-    ingredients:["chocolate","butter","sugar","eggs","flour"],
-    steps:["Melt chocolate & butter.","Mix batter.","Bake until edges set & center gooey."] }
+// Recipes data
+const RECIPES=[
+ {title:"Creamy Tomato Pasta",cat:"Vegetarian",time:25,rating:4.6,img:"https://via.placeholder.com/400x250?text=Pasta"},
+ {title:"Garlic Butter Shrimp",cat:"Seafood",time:20,rating:4.8,img:"https://via.placeholder.com/400x250?text=Shrimp"},
+ {title:"Lemon Herb Chicken",cat:"Meat",time:40,rating:4.4,img:"https://via.placeholder.com/400x250?text=Chicken"},
+ {title:"Chocolate Lava Cake",cat:"Dessert",time:30,rating:4.9,img:"https://via.placeholder.com/400x250?text=Cake"}
 ];
+// Helpers
+const qs=s=>document.querySelector(s),qsa=s=>document.querySelectorAll(s);
+function show(id){qsa(".page").forEach(p=>p.classList.add("hidden"));qs("#"+id).classList.remove("hidden");}
+qsa("[data-link]").forEach(a=>a.onclick=e=>{e.preventDefault();show(a.getAttribute("href").replace("#",""));});
+qs("#nav-toggle").onclick=()=>qsa(".main-nav a").forEach(a=>a.style.display=a.style.display==="inline"?"none":"inline");
 
-/* localStorage helpers */
-function readLS(key, fallback=null){ try{ return JSON.parse(localStorage.getItem(key)) ?? fallback; }catch(e){return fallback} }
-function writeLS(key,val){ localStorage.setItem(key, JSON.stringify(val)); }
-
-/***********************
- * Navigation
- ***********************/
-document.querySelectorAll('[data-link]').forEach(a=>{
-  a.addEventListener('click', (e)=>{
-    e.preventDefault();
-    const href = a.getAttribute('href') || '#home';
-    const id = href.replace('#','') || 'home';
-    showSection(id);
-    history.pushState({page:id}, '', '#'+id);
-  });
-});
-document.getElementById('nav-toggle').addEventListener('click', ()=>{
-  document.querySelectorAll('.main-nav a').forEach(a=>{
-    a.style.display = a.style.display === 'inline' ? 'none' : 'inline';
-  });
-});
-window.addEventListener('popstate', (e)=>{
-  const id = (e.state && e.state.page) || location.hash.replace('#','') || 'home';
-  showSection(id);
-});
-function showSection(id){
-  document.querySelectorAll('.page').forEach(s=>s.classList.add('hidden'));
-  const sel = document.getElementById(id);
-  if(sel) sel.classList.remove('hidden');
-  window.scrollTo({top:0,behavior:'smooth'});
+// Quiz
+const QUIZ=[{q:"Which oil in Italian cooking?",a:"Olive Oil",o:["Olive Oil","Coconut","Mustard","Sunflower"]}];
+function loadQuiz(){
+ let c=qs("#quiz");c.innerHTML=QUIZ.map((x,i)=>`<p>${x.q}</p>`+x.o.map(o=>`<label><input type=radio name=q${i} value="${o}"> ${o}</label>`).join("")).join("");
 }
+qs("#quiz-submit").onclick=()=>{let s=0;QUIZ.forEach((x,i)=>{let v=qs(`input[name=q${i}]:checked`);if(v&&v.value===x.a)s++});qs("#quiz-result").textContent=`Score: ${s}/${QUIZ.length}`};
+loadQuiz();
 
-/***********************
- * Home features
- ***********************/
-document.addEventListener('DOMContentLoaded', ()=>{
-  const initial = location.hash.replace('#','') || 'home';
-  showSection(initial);
+// Joke API
+qs("#joke-btn").onclick=async()=>{qs("#joke-output").textContent="Loading...";try{let r=await fetch("https://official-joke-api.appspot.com/random_joke");let j=await r.json();qs("#joke-output").textContent=j.setup+" — "+j.punchline}catch{qs("#joke-output").textContent="Error loading joke"}};
 
-  // toggle steps
-  document.querySelectorAll('#home-steps li').forEach(li=> li.addEventListener('click', ()=> li.classList.toggle('done')));
+// To-do
+let todos=JSON.parse(localStorage.getItem("todos")||"[]");
+function renderTodos(){qs("#todo-list").innerHTML=todos.map((t,i)=>`<li data-i=${i} class="${t.done?"done":""}"><input type=checkbox ${t.done?"checked":""}> ${t.text} <button>x</button></li>`).join("")}
+qs("#todo-add").onclick=()=>{let v=qs("#todo-input").value.trim();if(!v)return;todos.push({text:v,done:!1});localStorage.setItem("todos",JSON.stringify(todos));qs("#todo-input").value="";renderTodos()};
+qs("#todo-list").onclick=e=>{let i=e.target.parentNode.dataset.i;if(e.target.type==="checkbox"){todos[i].done=e.target.checked}else if(e.target.tagName==="BUTTON"){todos.splice(i,1)}localStorage.setItem("todos",JSON.stringify(todos));renderTodos()};
+renderTodos();
 
-  // quiz
-  setupQuiz('#home-quiz','home-quiz-submit','home-quiz-result');
-
-  // joke
-  setupJoke('joke-btn','joke-output');
-
-  // todo
-  setupTodo('todo-input','todo-add','todo-list');
-
-  // recipes
-  initRecipesPage();
-  initContactPage();
-});
-
-/***********************
- * Quiz
- ***********************/
-const QUIZ_DATA = [
-  {question:"Which oil is widely used in Italian cooking?", options:["Olive Oil","Coconut Oil","Mustard Oil","Sunflower Oil"], answer:"Olive Oil"},
-  {question:"Pasta is primarily made from?", options:["Rice","Wheat","Corn","Potato"], answer:"Wheat"},
-  {question:"Which ingredient makes a sauce creamy?", options:["Water","Cream","Vinegar","Soy Sauce"], answer:"Cream"}
-];
-function setupQuiz(containerSelector, submitBtnId, resultId){
-  const container = document.querySelector(containerSelector);
-  if(!container) return;
-  container.innerHTML = QUIZ_DATA.map((q,i)=>`
-    <div class="q"><p>${i+1}. ${q.question}</p>
-    ${q.options.map(opt=>`<label><input name="q${i}" type="radio" value="${opt}"> ${opt}</label><br>`).join('')}
-    </div>
-  `).join('');
-  const submitBtn = document.getElementById(submitBtnId);
-  if(submitBtn) submitBtn.addEventListener('click', ()=>{
-    let score=0;
-    QUIZ_DATA.forEach((q,i)=>{
-      const sel = document.querySelector(`input[name="q${i}"]:checked`);
-      if(sel && sel.value===q.answer) score++;
-    });
-    const out = document.getElementById(resultId);
-    if(out) out.textContent = `Score: ${score} / ${QUIZ_DATA.length}`;
-  });
+// Recipes
+function renderRecipes(){
+ let g=qs("#recipe-grid"),f=qs("#filter-category").value,s=qs("#search").value.toLowerCase(),sort=qs("#sort-by").value;
+ let r=RECIPES.filter(x=>(!f||x.cat===f)&&x.title.toLowerCase().includes(s));
+ if(sort==="rating-desc")r.sort((a,b)=>b.rating-a.rating);if(sort==="time-asc")r.sort((a,b)=>a.time-b.time);
+ g.innerHTML=r.map(x=>`<div class="recipe-card card"><img src="${x.img}" loading="lazy"><h3>${x.title}</h3><p>${x.cat} • ${x.time}min • ⭐${x.rating}</p></div>`).join("");
 }
+["search","filter-category","sort-by"].forEach(id=>qs("#"+id).oninput=renderRecipes);renderRecipes();
 
-/***********************
- * Joke
- ***********************/
-function setupJoke(buttonId, outputId){
-  const btn = document.getElementById(buttonId);
-  const out = document.getElementById(outputId);
-  if(!btn) return;
-  btn.addEventListener('click', async ()=>{
-    out.textContent = "Loading...";
-    try{
-      const r = await fetch("https://official-joke-api.appspot.com/random_joke");
-      const j = await r.json();
-      out.textContent = `${j.setup} — ${j.punchline}`;
-    }catch(e){
-      out.textContent = "Couldn't fetch a joke right now.";
-    }
-  });
-}
-
-/***********************
- * To-Do / Shopping
- ***********************/
-function setupTodo(inputId, addBtnId, listId){
-  const input = document.getElementById(inputId);
-  const addBtn = document.getElementById(addBtnId);
-  const ul = document.getElementById(listId);
-  if(!input || !addBtn || !ul) return;
-  let items = readLS('shop-items',[]) || [];
-  function render(){ ul.innerHTML = items.map((it,idx)=>`<li data-i="${idx}"><label><input type="checkbox" ${it.done?'checked':''}/> ${it.text}</label> <button class="del" data-i="${idx}">✕</button></li>`).join(''); }
-  render();
-  addBtn.addEventListener('click', ()=>{
-    const txt = input.value.trim(); if(!txt) return;
-    items.push({text:txt, done:false}); writeLS('shop-items',items); input.value=''; render();
-  });
-  ul.addEventListener('click', (e)=>{
-    if(e.target.matches('.del')){ const i = +e.target.dataset.i; items.splice(i,1); writeLS('shop-items',items); render(); }
-    if(e.target.matches('input[type="checkbox"]')){ const li = e.target.closest('li'); const i = +li.dataset.i; items[i].done = e.target.checked; writeLS('shop-items',items); render(); }
-  });
-}
-
-/***********************
- * Recipes page
- ***********************/
-function initRecipesPage(){
-  const grid = document.getElementById('recipe-grid');
-  if(!grid) return;
-  const search = document.getElementById('
+// Contact
+let msgs=JSON.parse(localStorage.getItem("msgs")||"[]");
+function renderMsgs(){qs("#saved-messages").innerHTML=msgs.map(m=>`<li>${m.name}: ${m.msg}</li>`).join("")}
+qs("#contact-form").onsubmit=e=>{e.preventDefault();let m={name:qs("#cname").value,email:qs("#cemail").value,msg:qs("#cmsg").value};msgs.push(m);localStorage.setItem("msgs",JSON.stringify(msgs));qs("#contact-feedback").textContent="Saved!";renderMsgs();e.target.reset()};
+renderMsgs();
