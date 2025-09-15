@@ -14,15 +14,10 @@ header {
   text-align: center;
 }
 
-header nav {
-  margin-top: 10px;
-}
-
 header nav a {
   color: white;
-  margin: 0 12px;
+  margin: 0 10px;
   text-decoration: none;
-  font-weight: bold;
 }
 
 header nav a:hover {
@@ -37,19 +32,57 @@ header nav a:hover {
   padding: 20px;
 }
 
-/* Cards */
-.recipe-card, .form-card, .fun-card {
+/* Recipe Card */
+.recipe-card {
   background: white;
   padding: 20px;
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-/* Recipe image */
 .recipe-card img {
   width: 100%;
   border-radius: 10px;
   margin-bottom: 15px;
+}
+
+/* Form Card */
+.form-card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+form label {
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+form input, form textarea {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-top: 5px;
+}
+
+form button {
+  background-color: #27ae60;
+  color: white;
+  padding: 10px;
+  margin-top: 15px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+form button:hover {
+  background-color: #219150;
 }
 
 /* Buttons */
@@ -67,16 +100,6 @@ button:hover {
   background-color: #219150;
 }
 
-/* Quiz Section */
-#quiz-container {
-  margin-top: 15px;
-}
-
-.quiz-question {
-  margin-bottom: 12px;
-  font-weight: bold;
-}
-
 /* Footer */
 footer {
   text-align: center;
@@ -87,21 +110,8 @@ footer {
 }
 
 /* Responsive Layout */
-@media (max-width: 1024px) {
+@media (max-width: 768px) {
   .container {
     grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 600px) {
-  body {
-    font-size: 14px;
-  }
-  header h1 {
-    font-size: 20px;
-  }
-  nav a {
-    display: block;
-    margin: 8px 0;
   }
 }

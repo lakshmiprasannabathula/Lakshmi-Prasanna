@@ -3,19 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Advanced Cooking Recipes</title>
+  <title>Cooking Recipes</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
   <!-- Header -->
   <header>
-    <h1>🍳 Cooking Recipes Hub</h1>
+    <h1>🍝 Delicious Pasta Recipe</h1>
     <nav>
       <a href="#">Home</a>
-      <a href="#recipes">Recipes</a>
-      <a href="#quiz">Quiz</a>
-      <a href="#fun">Food Fun</a>
+      <a href="#">Recipes</a>
+      <a href="#">Contact</a>
     </nav>
   </header>
 
@@ -23,10 +22,9 @@
   <main class="container">
 
     <!-- Recipe Section -->
-    <section class="recipe-card" id="recipes">
+    <section class="recipe-card">
       <img src="pasta.jpg" alt="Pasta Recipe">
-      <h2>Delicious Pasta Recipe</h2>
-      <h3>Ingredients</h3>
+      <h2>Ingredients</h2>
       <ul>
         <li>200g Pasta</li>
         <li>2 Tomatoes</li>
@@ -36,7 +34,7 @@
         <li>Salt and Pepper</li>
       </ul>
 
-      <h3>Steps to Cook</h3>
+      <h2>Steps to Cook</h2>
       <ol id="steps">
         <li>Boil pasta until soft.</li>
         <li>Chop tomatoes, onion, and garlic.</li>
@@ -47,28 +45,31 @@
       </ol>
 
       <button onclick="showMessage()">Try This Recipe</button>
+      <button onclick="toggleStep()">Mark Step Done</button>
     </section>
 
-    <!-- Cooking Quiz Section -->
-    <section class="form-card" id="quiz">
-      <h2>🍴 Cooking Knowledge Quiz</h2>
-      <div id="quiz-container"></div>
-      <button onclick="submitQuiz()">Submit Quiz</button>
-      <p id="quiz-result"></p>
-    </section>
+    <!-- Contact Form -->
+    <section class="form-card">
+      <h2>Contact Us</h2>
+      <form id="contactForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" required>
 
-    <!-- API Section -->
-    <section class="fun-card" id="fun">
-      <h2>😂 Random Food Joke</h2>
-      <button onclick="getFoodJoke()">Get a Joke</button>
-      <p id="joke"></p>
+        <label for="email">Email:</label>
+        <input type="email" id="email" required>
+
+        <label for="message">Message:</label>
+        <textarea id="message" rows="4" required></textarea>
+
+        <button type="submit">Submit</button>
+      </form>
     </section>
 
   </main>
 
   <!-- Footer -->
   <footer>
-    <p>&copy; 2025 Cooking Recipes Hub. All rights reserved.</p>
+    <p>&copy; 2025 Cooking Recipes. All rights reserved.</p>
   </footer>
 
   <script src="script.js"></script>
