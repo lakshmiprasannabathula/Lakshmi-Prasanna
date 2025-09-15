@@ -3,36 +3,74 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Recipe Page</title>
-  <!-- Link to CSS file -->
+  <title>Advanced Cooking Recipes</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <h1>Delicious Pasta Recipe</h1>
-  <h2>Ingredients</h2>
-  <ul>
-    <li>200g Pasta</li>
-    <li>2 Tomatoes</li>
-    <li>1 Onion</li>
-    <li>2 cloves Garlic</li>
-    <li>Olive Oil</li>
-    <li>Salt and Pepper</li>
-  </ul>
+  <!-- Header -->
+  <header>
+    <h1>🍳 Cooking Recipes Hub</h1>
+    <nav>
+      <a href="#">Home</a>
+      <a href="#recipes">Recipes</a>
+      <a href="#quiz">Quiz</a>
+      <a href="#fun">Food Fun</a>
+    </nav>
+  </header>
 
-  <h2>Steps to Cook</h2>
-  <ol>
-    <li>Boil pasta until soft.</li>
-    <li>Chop tomatoes, onion, and garlic.</li>
-    <li>Sauté onion and garlic in olive oil.</li>
-    <li>Add tomatoes and cook into a sauce.</li>
-    <li>Mix pasta with sauce and season.</li>
-    <li>Serve hot and enjoy!</li>
-  </ol>
+  <!-- Main content -->
+  <main class="container">
 
-  <button onclick="showMessage()">Try This Recipe</button>
+    <!-- Recipe Section -->
+    <section class="recipe-card" id="recipes">
+      <img src="pasta.jpg" alt="Pasta Recipe">
+      <h2>Delicious Pasta Recipe</h2>
+      <h3>Ingredients</h3>
+      <ul>
+        <li>200g Pasta</li>
+        <li>2 Tomatoes</li>
+        <li>1 Onion</li>
+        <li>2 cloves Garlic</li>
+        <li>Olive Oil</li>
+        <li>Salt and Pepper</li>
+      </ul>
 
-  <!-- Link to JavaScript file -->
+      <h3>Steps to Cook</h3>
+      <ol id="steps">
+        <li>Boil pasta until soft.</li>
+        <li>Chop tomatoes, onion, and garlic.</li>
+        <li>Sauté onion and garlic in olive oil.</li>
+        <li>Add tomatoes and cook into a sauce.</li>
+        <li>Mix pasta with sauce and season.</li>
+        <li>Serve hot and enjoy!</li>
+      </ol>
+
+      <button onclick="showMessage()">Try This Recipe</button>
+    </section>
+
+    <!-- Cooking Quiz Section -->
+    <section class="form-card" id="quiz">
+      <h2>🍴 Cooking Knowledge Quiz</h2>
+      <div id="quiz-container"></div>
+      <button onclick="submitQuiz()">Submit Quiz</button>
+      <p id="quiz-result"></p>
+    </section>
+
+    <!-- API Section -->
+    <section class="fun-card" id="fun">
+      <h2>😂 Random Food Joke</h2>
+      <button onclick="getFoodJoke()">Get a Joke</button>
+      <p id="joke"></p>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Cooking Recipes Hub. All rights reserved.</p>
+  </footer>
+
   <script src="script.js"></script>
 </body>
 </html>
